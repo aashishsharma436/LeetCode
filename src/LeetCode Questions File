@@ -1,0 +1,267 @@
+Question 1: Kth Weakest row in the Matrix
+
+            mat =  [[1,1,0,0,0],[1,1,1,1,0],[1,0,0,0,0],[1,1,0,0,0],[1,1,1,1,1]],
+            k = 3
+
+            output = [2,0,3] these are the index to weakest to strongest;
+
+
+Solution:       protected int[] kWeakestRows(int[][] rows, int k){
+                Queue<int[]> queue = new PriorityQueue<>((a,b) ->{
+                    int cmp = a[1]-b[1];
+                    if (cmp!=0) return cmp;
+                    return a[0]-b[0];
+                }
+
+                int count[] = Arrays.stream(rows).flatMapToInt(x->IntStream.of(Arrays.stream(x).sum())).toArray();
+                for (int i=0;i<count.length;i++){
+                    queue.add(new int[]{i,count[i]};
+                }
+                count = null;
+                int res[] = new int[k];
+                for (int i=0;i<k;i++) res[i] = queue.poll()[0];
+                return res;
+            }
+Question 2: Wealthiest row in the Matrix
+
+            accounts = [[1,5],[7,3],[3,5]]
+            Output: 10
+
+Solution:  protected int maximumWealth(int[][] arr){
+              return Arrays.stream(arr).flatMapToInt(x-> IntStream(Arrays.stream(x).sum())).max().getAsInt();
+            }
+
+Question 3: Print the LinkedList from the Middle
+Solution:   protected ListNode middle(ListNode head){
+                if (head.next == null) return head;
+
+                ListNode temp = head;
+                int count = 1;
+                while (temp.next!=null){
+                    count++;
+                    temp = temp.next;
+                }
+
+                count /= 2;
+                for (int i=0;i<=count;i++) head = head.next;
+                return head;
+            }
+
+
+            or
+
+            protected ListNode middle (ListNode head){
+                ListNode slow = head , fast = head;
+                while (slow != null && fast != null && fast!= null){
+                    slow = slow.next;
+                    fast = fast.next.next;
+                }
+                return slow;
+            }
+
+
+Question 4: Longest Common Prefix
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+
+Solution: private String longestCommonPrefix(String[] args){
+                int count = 0;
+                int length = Arrays.stream(Arrays.stream(args).mapToInt(x->x.length()).toArray()).min().getAsInt();
+                for (int i=0;i<length;i++){
+                    char ch = args[0].charAt(i);
+                    boolean flag = true;
+                    for (int j=1;j<args.length();j++) {
+                        if (args[j].charAt(i) != ch) flag = false;
+                    }
+                    if (!flag) break;
+                    count++;
+                }
+                return args[0].substring(0,count);
+            }
+
+
+Or
+
+        private String longestCommonPrefix(String[] args){
+            if (args == null || args.length == 0) return "";
+            StringBuilder str = new StringBuilder();
+            Arrays.sort(args);
+            String first = args[0];
+            String last = args[args.length-1];
+            for (int i=0;i<first.length() && i< last.length();i++){
+                if (first.charAt(i) == last.charAt(i)) str.append(first.charAt(i));
+                else return str.toString();
+            }
+            return str.toString();
+        }
+
+Question 5: Vaild paranthesis
+Solution:  private boolen isValid(String str){
+                Stack<Character> stk = new Stack<>();
+                for (char c: str.toCharArray()){
+                    if (c == '(') stk.push(')');
+                    else if (c == '{') stk.push('}');
+                    else if (c == '[') stk.push(']');
+                    else if (stk.isEmpty() || stk.pop()!=c) return false;
+
+                }
+                return stk.isEmpty();
+            }
+
+Question 6: Merge Two Sorted Linked List
+Sol:     private ListNode mergeList(ListNode l1, ListNode l2){
+             ListNode head = new ListNode(0);
+             ListNode temp = head;
+             while (l1!=null || l2 !=null){
+                 ListNode temp1 = null;
+                 if (l1 != null && l2 != null && l1.val>=l2.val){
+                     temp1 = l2;
+                     l2 = l2.next;
+                 }
+                 else if (l1 != null && l2 != null && l1.val<l2.val){
+                     temp1 = l1;
+                     l1 = l1.next;
+                 }
+                 else if (l1 == null) { temp1=l2; l2 = l2.next;}
+                 else if (l2 == null) { temp1= l1; l1 = l1.next;}
+
+                 temp.next = new ListNode(temp1.val);
+                 temp = temp.next;
+
+             }
+             return head.next;
+        }
+
+        or
+        private ListNode mergeList(ListNode l1, ListNode l2){
+            if (l1 == null) return l2;
+            if (l2 == null) return l1;
+            if (l1.val > l2.val){
+                l2.next = mergeList(l1,l2.next);
+                return l2;
+            }
+            else {
+                l1.next = mergeList(l1.next,l2);
+                return l1;
+            }
+        }
+
+Question 7: Remove the Duplicate elements from array and set all the elements in the starting position and return the length of array
+Input: nums = [0,1,2,2,3,0,4,2], val = 2
+Output: 5, nums = [0,1,4,0,3,_,_,_]
+
+Solution:  private int removeDuplicate (int [] arr){
+                if (arr == null || arr.length == 0) return 0;
+                int count = 0;
+                for (int i=0;i<arr.length-1;i++){
+                    if (arr[i]<arr[i+1]) {
+                        count[i+1] = arr[i+1];
+                        count++;
+                    }
+                }
+                return count+1;
+            }
+
+
+Question 8: Find the Index of the First occurence in a  String
+Input : String a = ississipis
+        String b = issip
+Output: 3
+
+Solution: private static int checkPalindrome(String a, String b){
+            if (a.contains(b)){
+                for (int i=0;i<a.length()-b.length();i++){
+                    if (a.charAt(i) == b.charAt(0)){
+                        int temp = i;
+                            for (int j=0;j<b.length();j++){
+                                if (a.charAt(temp) != b.charAt(j)) break;
+                                temp++;
+                                if (j == b.length()-1) return i;
+                            }
+                        }
+                    }
+                    return a.length()-b.length();
+                }
+                else return -1;
+            }
+
+Question 9:  Plus one   (1 <= digits.length <= 100)
+Input : digits = [9]
+Output : [1,0]
+
+in this case we can't store the values in int, long and double so we have to use BigInteger and by using this time and space complexity will increase
+
+Solution:  private int[] plusOne(int[] digits){
+                for (int i=digits.length-1;i>=0;i--){
+                    if (digits[i]<9){
+                        digits[i]++;
+                        return digits;
+                    }
+                    digits[i] = 0;
+                }
+                digits = new int[digits.length +1];             // increase the space of array at runtime
+                digits[0] = 1;
+                return digits;
+            }
+
+Question 10: Remove Duplicates for Sorted Linked List
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
+
+Solution: private ListNode removeDuplicate(ListNode head){
+            if (head == null) return null;
+            ListNode temp = head;
+            ListNode temp1 = temp;
+            head = head.next;
+            while (head != null){
+                if (head.val != temp1.val) {
+                    temp1.next = head;
+                    temp1 = temp1.next;
+                }
+                head = head.next
+            }
+            temp1.next = null;
+            return temp;
+          }
+
+Question 11: Climbing Stairs (you can step the stairs either 1 or 2)
+input: n = 45
+Output = 1836311903
+input n = 3
+output = 3  expl( 1 1 1, 1 2, 2 1)
+
+Solution:  private int climb(int n){
+              if (n<2) return 2;
+              int first = 1, second = 2, temp = 0;
+              for (int i=3;i<=n;i++){
+                temp = second;
+                second += first;
+                first = temp;
+              }
+              return second;
+           }
+
+Question 12: Check Wheter tree is same or not
+sol: private boolean isSame(ListNode p, ListNode q){
+        if (p == null || q ==null) return ( p == null && q ==null);
+        return p.val == q.val && isSame(p.left,q.left) && isSame(p.right,q.right);
+    }
+
+Question 13: BinaryTree is Symmetric or not
+Solution: private boolean isSym(TreeNode root){
+            return is(root.left, root.right);
+          }
+
+          private boolean is(TreeNode left, TreeNode right){
+            if (left == null || right == null) return (left == null && right == null);
+            return left.val == right.val && is(left.left,right.right) && is(left.right,right.left);
+          }
+
+Question 14: Maximum Depth of Binary BinaryTree
+Solution:
+        private int maxDepth(TreeNode root){
+            if (root == null) return 0;
+            int left = maxDepth(root.left);
+            int right = maxDepth(root.right);
+            return Math.max(left,right) +1;
+        }
