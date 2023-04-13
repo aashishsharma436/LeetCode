@@ -265,3 +265,84 @@ Solution:
             int right = maxDepth(root.right);
             return Math.max(left,right) +1;
         }
+Question 15: Convert array to binary Tree
+            // i is the starting index initially which passed as zero
+Solution: private TreeNode insertLevelOrder(int arr[],int i){
+            TreeNode root = null;
+            if (i<arr.length){
+                root = new TreeNode(arr[i]);
+                root.left = new TreeNode(arr[i]
+            }
+            return root;
+          }
+Question 16: Convert sorted array to Binary Search Tree
+Solution: private TreeNode bst(int arr[]){
+            return createBST(arr,0,arr.length-1);
+          }
+
+          private TreeNode createBST(int arr[], int l, int r){
+            if (l>r) return null;
+            int mid = (l+r)/2;
+            TreeNode root = new TreeNode(arr[mid]);
+            root.left = createBST(arr,l,mid-1);
+            root.right = createBST(arr,mid+1,r);
+            return root;
+          }
+Question 17: Check tree is balanced or not
+Solution: private boolean isBal(TreeNode root){
+            return search(root) != -1;
+          }
+          private int search(TreeNode root){
+            if (root == null) return 0;
+            int left = search(root.left);
+            int right = search(root.right);
+            if (left == -1 || right == -1 || Math.abs(left-right)>1) return -1;
+            return 1+Math.max(left,right);
+          }
+
+Question 18: TargetSum till leaf node
+Input: Input: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+       Output: true
+                            5
+                           / \
+                          4   8              through 5->4->11->2 total sum is 22
+                         /   / \
+                        11  13  4
+                       /  \      \
+                      7    2      1
+
+Solution:  public boolean hasPathSum(TreeNode root, int targetSum){
+            return check(root,0,targetSum);
+          }
+          public boolean check(TreeNode root, int sum, int tar){
+            if (root == null) return false;
+            if (root.left == null && root.right == null) return (root.val+sum) == tar;
+            else return (path(root.left,root.val+sum,tar) || path(root.right,root.val+sum,tar));
+          }
+
+Question 19: Pascal's Triangle
+Solution: private List<List<Integer>> generate(int row){
+              List<List<Integer>> arr = new ArrayList<>();
+              arr.add(new ArrayList<>(Arrays.asList(1)));
+              if (row == 1) return arr;
+              arr.add(new ArrayList<>(Arrays.asList(1,1)));
+              if (row == 2) return arr;
+              for (int i=3;i<=row;i++){
+                  List<Integer> res = new ArrayList<>();
+                  for (int j=0;j<=arr.get(i-2).size();j++){
+                      if (j==0 || j==arr.get(i-2).size()) res.add(1);
+                      else res.add(arr.get(i-2).get(j-1)+arr.get(i-2).get(j));
+                  }
+                  arr.add(res);
+              }
+              return arr;
+          }
+Question 20: Pascal's Triangle (Type 2)
+Solution: public static List<Integer> generate1(int row) {
+              if (row == 0) return new ArrayList<>(Arrays.asList(1));
+              List<Integer> curr = new ArrayList<>(Arrays.asList(1));
+              List<Integer> prev = generate1(row-1);
+              for (int i=1;i<row;i++) curr.add(prev.get(i)+prev.get(i-1));
+              curr.add(1);
+              return curr;
+          }
