@@ -1,0 +1,11 @@
+Question: https://leetcode.com/problems/excel-sheet-column-title/description/
+
+private String convertToTittle(int num){
+  String res = "";
+  while (num>0){
+    num--;
+    res = (char)('A' + num%26) + res;
+    num /= 26;
+  }
+  return res;
+}
