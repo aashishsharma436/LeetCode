@@ -1,0 +1,23 @@
+Question : https://leetcode.com/problems/zigzag-conversion/
+class Solution {
+    public String convert(String s, int row) {
+        if (row == 1) return s;
+        StringBuilder str = new StringBuilder();
+        int len = s.length();
+        int section1 = 2*(row-1);
+
+        for (int i=0;i<row;i++){
+            int index = i;
+            while(index < len){
+                str.append(s.charAt(index));
+                if (i!=0 && i!= row-1){
+                    int section2 = section1 - (2*i);
+                    int section3 = index + section2;
+                    if (section3<len) str.append(s.charAt(section3)); 
+                }
+                index += section1;
+            }
+        }
+        return str.toString();
+    }
+}
